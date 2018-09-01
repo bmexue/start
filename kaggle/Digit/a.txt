@@ -1,0 +1,43 @@
+    def myfitone(self, X, Y):
+        lastError = []
+            
+        # Return random integers from the discrete uniform distribution in the interval [0, low).
+        i = np.random.randint(X.shape[0],high=None)
+        a =[]
+        a.append(np.atleast_2d([X[i]]).T)   # 从m个输入样本中随机选一组 这样迭代的快一点
+
+        for l in range(len(self.weights)):
+            t1 = np.dot(self.weights[l],a[l])
+            t2 = self.biass[l]
+            dot_value = np.dot(self.weights[l],a[l]) +  self.biass[l]  # 权值矩阵中每一列代表该层中的一个结点与上一层所有结点之间的权值
+            activation = self.activation(dot_value)
+            a.append(activation) # activation 还是2维数组
+            # so a 里面保存了每一层的输出
+
+        error =  np.atleast_2d([Y[i]]).T - a[-1]    # 计算输出层delta  是二维向量
+        
+        lastError = error
+        deltas = []
+        sL = error * tanh_prime(a[-1])
+        deltas.append(sL)   # 内积,传递a[-1] 是否错误的？
+
+        # 从倒数第2层开始反向计算delta
+        for l in range(len(a) - 2, 0, -1):                
+            left = np.dot(self.weights[l].T,deltas[-1])  #[q,1]
+            tmp = left*tanh_prime(a[l])
+            deltas.append(tmp)
+
+        # [level3(output)->level2(hidden)]  => [level2(hidden)->level3(output)]
+        deltas.reverse()    # 逆转列表中的元素
+
+        # backpropagation
+        # 1. Multiply its output delta and input activation to get the gradient of the weight.
+        # 2. Subtract a ratio (percentage) of the gradient from the weight.
+        for i in range(len(self.weights)):  # 逐层调整权值
+            aa = a[i]
+            de = deltas[i]
+            tmpw = np.dot(de,aa.T)
+            self.dweights[i] += tmpw
+            tmpb = de
+            self.dbiass[i] += tmpb
+        return error

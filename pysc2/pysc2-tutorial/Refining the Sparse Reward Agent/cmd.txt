@@ -1,0 +1,20 @@
+python -m pysc2.bin.agent --map Simple64
+python -m pysc2.bin.agent --map CollectMineralShards --agent pysc2.agents.scripted_agent.CollectMineralShards
+
+python -m pysc2.bin.agent --map Simple64 --agent_race T
+
+python -m pysc2.bin.play --map Simple64 --user_race T
+
+python -m pysc2.bin.agent --map Simple64 --agent pysc2.agents.simple_agent.SimpleAgent --agent_race T
+
+
+
+
+python -m pysc2.bin.agent --map Simple64 --agent pysc2.agents.smart_agent.SmartAgent --agent_race T
+
+python -m pysc2.bin.agent --map Simple64 --agent pysc2.agents.smart_agent.SmartAgent --agent_race T --max_agent_steps 0 --norender
+
+
+python -m pysc2.bin.agent --map Simple64 --agent sparse_agent.SparseAgent --agent_race T --max_agent_steps 0 --norender
+
+python -m pysc2.bin.agent --map Simple64 --agent my_refined_agent.SparseAgent --agent_race T --max_agent_steps 0 --norender
