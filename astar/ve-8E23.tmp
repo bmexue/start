@@ -1,0 +1,46 @@
+#include "StdAfx.h"
+#include "MainDlg.h"
+
+
+LRESULT CMainDlg::OnBnClickedButton1(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+	// TODO: Add your control notification handler code here
+	for( int i=0;i<m_nNum*m_nNum;i++)
+	{
+		m_nnMap[i] = 0;
+	}
+
+
+	InvalidateRect(NULL);
+
+	return 0;
+}
+
+
+// 计算
+//int  FindPathByW( int * pnnMap, int nDx, int nDy, POINT pStart, POINT pEnd,tagNode *pOutList)
+LRESULT CMainDlg::OnBnClickedButton2(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
+{
+	// TODO: Add your control notification handler code here
+
+	if( m_pStart.x == -1 || m_pStart.y == -1 || m_pEnd.x == -1 || m_pEnd.y == -1 )
+	{
+        MessageBox(L"起点、终点没有构造",L"错误");
+		return -1;
+	}
+
+	for( int i=0;i<m_nNum*m_nNum;i++)
+	{
+		tagNode node;
+		m_pOutList1[i] = node;
+		m_pOutList2[i] = node;
+	}
+
+
+	int nRes = FindPathByW(m_nnMap,m_nNum,m_nNum, m_pStart,m_pEnd,m_pOutList1);
+
+	m_bHasres = true;
+
+	InvalidateRect(NULL);
+	return 0;
+}
